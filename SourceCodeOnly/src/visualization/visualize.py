@@ -142,7 +142,7 @@ def generate_reports(project_dir):
 
 def main():
     LOG_NAME = "process.log"
-    project_dir = Path(__file__).resolve().parents[2]
+    project_dir = str(Path(__file__).resolve().parents[2])
     log_path = os.path.join(project_dir,LOG_NAME)
     log_fmt = '%(processName)-10s %(module)s %(asctime)s %(message)s'
     logging.basicConfig(filename=log_path,level=logging.INFO, format=log_fmt)
