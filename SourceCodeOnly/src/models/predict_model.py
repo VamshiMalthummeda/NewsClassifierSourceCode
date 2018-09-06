@@ -65,7 +65,7 @@ def home():
 @app.route('/news_type/<string:fileid>')
 def predict_news_type(fileid):
     LOG_NAME = "process.log"
-    project_dir = Path(app.root_path).resolve().parents[1]
+    project_dir = str(Path(app.root_path).resolve().parents[1])
     log_path = os.path.join(project_dir,LOG_NAME)
     log_fmt = '%(processName)-10s %(module)s %(asctime)s %(message)s'
     logging.basicConfig(filename=log_path,level=logging.INFO, format=log_fmt)
