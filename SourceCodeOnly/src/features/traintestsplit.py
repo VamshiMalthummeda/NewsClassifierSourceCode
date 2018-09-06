@@ -18,7 +18,7 @@ def main():
         DOC_PATTERN = os.getenv('doc_pkl_pattern')
         CAT_PATTERN = os.getenv('cat_pattern')
         # useful for finding various files
-        project_dir = Path(__file__).resolve().parents[2]
+        project_dir = str(Path(__file__).resolve().parents[2])
         process_path = os.path.join(project_dir,'data','processed')
         train_path = os.path.join(process_path,'train')
         if not os.path.exists(train_path):
