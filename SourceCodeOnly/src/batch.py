@@ -19,7 +19,12 @@ def folder_structure(project_dir,root_dir):
             if name == "templates":
                 src_dir = os.path.join(root_dir,name)
                 dest_dir = os.path.join(project_dir,'src','models')
-                shutil.move(src_dir,dest_dir)
+                if not os.path.exists(os.path.join(dest_dir,'templates')):
+                    shutil.move(src_dir,dest_dir)
+                elif not os.listdir(os.path.join(dest_dir,'templates')):
+                    os.rmdir(os.path.join(dest_dir,'templates'))
+                    shutil.move(src_dir,dest_dir)
+                    
             if name == ".env":
                 dest_env_path = os.path.join(project_dir,name)
                 src_env_path = os.path.join(root_dir,".env")
@@ -61,7 +66,7 @@ def launch_browser():
     webbrowser.open_new(url)
 
 def main():
-    project_dir = Path(__file__).resolve().parents[1]
+    project_dir = str(Path(__file__).resolve().parents[1])
     root_dir = sys.prefix
     folder_structure(project_dir,root_dir)
     make_dataset.main()
