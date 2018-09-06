@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Dialog - Default functionality</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <style>
+      #uploadFile {
+          width:150px;
+      }
+        .btn-primary {
+            color: #fff;
+            background-color: #337ab7;
+            border-color: #2e6da4;
+        }
+        .btn {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: normal;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            touch-action: manipulation;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-image: none;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .fileUpload {
+            position: relative;
+            overflow: hidden;
+            margin: 10px;
+        }
+        .ui-widget-header {
+            background:#337ab7;
+            color:white;
+            font-family:Arial;
+            font-weight:normal;
+        }
+        .fileUpload input.upload {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0;
+            padding: 0;
+            font-size: 12px;
+            font-family:Verdana;
+            cursor: pointer;
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+  </style>
+  <script>
+		$( function() {
+		    $("#dialog").dialog();
+		    $("#divProgress").hide()
+		    $("#divResult").hide()
+		    document.getElementById("uploadBtn").onchange = function () {
+		    $("#divProgress").show()
+		    $("#divResult").hide()
+		        text = this.value.replace("C:\\fakepath\\", "")
+		        document.getElementById("uploadFile").value = text;
+    			httpGetAsync('http://127.0.0.1:5000/news_type/' + text, function (response) {
+    				$("#divProgress").hide()
+    				$("#divResult").show()
+    				var obj = JSON.parse(response);
+    				$('#lblClassification').text(obj.prediction);
+    				$('#lblConfidence').text(parseFloat(obj.confidence) * 100);
+		        })
+			};
+		} );
+		function httpGetAsync(theUrl,callback)
+		{
+			var xmlHttp = new XMLHttpRequest();
+			xmlHttp.onreadystatechange = function(){
+			    if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                    callback(xmlHttp.responseText)
+			}
+			xmlHttp.open("GET",theUrl,true);
+			xmlHttp.send(null);
+		}  
+  </script>
+</head>
+<body>
+	<div id="dialog" title="Classify News" style="width:400px">
+        <table>
+            <tr>
+                <td>
+		            <input id="uploadFile" placeholder="Choose News File" disabled="disabled" />
+                </td>
+                <td>
+		            <div class="fileUpload btn btn-primary">
+    			            <span>Upload</span>
+    			            <input id="uploadBtn" type="file" class="upload" />
+		            </div>
+                </td>
+            </tr>
+            </table>
+            <div id="divProgress">
+                <table>
+                    <tr>
+                        <td colspan="2">
+                            <span>Predicting...</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="divResult">
+                <table>
+                <tr>
+                    <td>
+                        <span>Classified as </span>
+                    </td>
+                    <td>
+                        <label id="lblClassification" style="background-color:white;color:green"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>with confidence% </span>
+                    </td>
+                    <td>
+                        <label id="lblConfidence" style="background-color:white;color:green"></label>
+                    </td>
+                </tr>
+                </table>
+            </div>
+	</div>
+</body>
+</html>
