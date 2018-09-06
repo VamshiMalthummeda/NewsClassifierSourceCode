@@ -81,7 +81,7 @@ def GenerateAnalytics(dirpath):
 def main():
     LOG_NAME = "process.log"
     # useful for finding various files
-    project_dir = Path(__file__).resolve().parents[2]
+    project_dir = str(Path(__file__).resolve().parents[2])
     ext_path = os.path.join(project_dir,'data','external')
     raw_path = os.path.join(project_dir,'data','raw')
     log_path = os.path.join(project_dir,LOG_NAME)
