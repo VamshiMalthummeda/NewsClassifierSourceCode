@@ -4,7 +4,7 @@ def get_files():
     files = []
     name_dir = os.path.dirname(os.getcwd())
     files.append(('',['.env']))
-    files.append(('templates',['templates/index.html']))
+    files.append(('templates',['src/models/templates/index.html']))
     return files
 setup(
     name='newsclassifier',
